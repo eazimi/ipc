@@ -15,6 +15,7 @@ find_package(Threads REQUIRED)
 
 add_executable(ipc
     main.cpp
+    base_socket.hpp
     server.h
     server.cpp
     )

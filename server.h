@@ -15,10 +15,11 @@
 #include <thread>
 #include <list>
 #include <string>
+#include "base_socket.hpp"
 
 using namespace std;
 
-class Server {
+class Server : public base_socket {
 private:
   int s;
 

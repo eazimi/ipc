@@ -10,16 +10,16 @@ int main(int argc, char** argv)
     return 0;
   }
   
-  unique_ptr<Server> server;
+  unique_ptr<base_socket> ipc;
   if ((string)argv[1] == "client")
     ;
   else if ((string)argv[1] == "server") {
-    server = make_unique<Server>();
+    ipc = make_unique<Server>();
   } else {
-    cout << "wrong format, try this: ./ipc [server or client]";
+    cout << "wrong format, try this: ./ipc [server or client]" << endl;
     return 0;
   }
 
-  server->run();
+  ipc->run();
   return 0;
 }
