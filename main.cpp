@@ -1,4 +1,5 @@
 #include "server.h"
+#include "client.h"
 #include <memory>
 
 using namespace std;
@@ -12,7 +13,7 @@ int main(int argc, char** argv)
   
   unique_ptr<base_socket> ipc;
   if ((string)argv[1] == "client")
-    ;
+    ipc = make_unique<Client>();
   else if ((string)argv[1] == "server") {
     ipc = make_unique<Server>();
   } else {

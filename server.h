@@ -24,7 +24,7 @@ private:
   int s;
 
 public:
-  Server() = default;
+  explicit Server() = default;
   void run();
 };
 

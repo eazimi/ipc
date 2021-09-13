@@ -18,5 +18,7 @@ add_executable(ipc
     base_socket.hpp
     server.h
     server.cpp
+    client.h
+    client.cpp
     )
 target_link_libraries(ipc Threads::Threads)
