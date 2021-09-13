@@ -1,11 +1,27 @@
 #include "server.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <stdio.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/shm.h>
+#include <iostream>
+#include <thread>
+#include <list>
+#include <string>
 
 #define PORT 7000
 #define IP "127.0.0.1"
 #define BUFFER_SIZE 1024
 
+using namespace std;
+
 static unsigned int last_fibo = 0;
-static std::list<int> li;
+static list<int> li;
 static struct sockaddr_in servaddr;
 static socklen_t len;
 
