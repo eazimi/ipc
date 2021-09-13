@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <thread>
 #include <unistd.h>
+#include <map>
 
 #define PORT 7000
 #define IP "127.0.0.1"
@@ -20,7 +21,7 @@
 
 using namespace std;
 
-static unsigned int last_fibo = 0;
+static map<int, unsigned int> last_fibo;
 static list<int> li;
 
 static constexpr unsigned long int fibo(long int n)
@@ -36,6 +37,7 @@ static void getConn(int s, sockaddr_in const& servaddr, socklen_t len)
   while (true) {
     int conn = accept(s, (struct sockaddr*)&servaddr, &len);
     li.push_back(conn);
+    last_fibo[conn] = 0;
     cout << "client connected, socket_id: " << conn << endl;
   }
 }
@@ -47,15 +49,15 @@ static void send(int sock, int fibo_val)
   ::send(sock, sendbuf, strlen(sendbuf), 0); // Send out
 }
 
-static unsigned long calculate_fibo(char* buf)
+static unsigned long calculate_fibo(int socket, char* buf)
 {
-  auto num      = strtol(buf, nullptr, 10);
+  auto num      = atoi(buf);
   auto fibo_val = 0;
   if (num < 0)
-    fibo_val = last_fibo;
+    fibo_val = last_fibo[socket];
   else {
     fibo_val  = fibo(num);
-    last_fibo = fibo_val;
+    last_fibo[socket] = fibo_val;
   }
   return fibo_val;
 }
@@ -85,7 +87,7 @@ static void getData()
         memset(buf, 0, sizeof(buf));
         int len = recv(it, buf, sizeof(buf), 0);
         cout << "received from socket " << it << ", data: " << buf << endl;
-        auto fibo_val = calculate_fibo(buf);
+        auto fibo_val = calculate_fibo(it, buf);
         send(it, fibo_val);
       }
     }
